@@ -1,1 +1,1 @@
-# React-Sturdy
+# React-Study
