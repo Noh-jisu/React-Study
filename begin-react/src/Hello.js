@@ -1,7 +1,15 @@
 import React from 'react';
 
-function Hello() {
-    return <div>안녕하세요</div>
+// props 대신 {color, name} 사용가능
+function Hello({color, name} ) {
+    return <div style={{
+        // props.color 대신 color사용가능
+        color
+    }}>안녕하세요 {name}</div>
+}
+// props를 설정하지 않았을때 기본값 설정방법
+Hello.defaultProps = {
+    name : '이름없음'
 }
 
 export default Hello;
