@@ -1,13 +1,9 @@
 import React from "react";
-import Hello from "./Hello";
+import Users from "./Users";
 
 function App() {
   return (
-    <div>
-      <Hello />
-      <Hello />
-      <Hello />
-    </div>
+    <Users />
   );
 }
 
