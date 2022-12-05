@@ -1,50 +1,28 @@
-import React, { useEffect, useReducer } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-function reducer(state, action){
-    switch(action.type){
-        case 'LOADING':
-            return {
-                loading: true,
-                data: null,
-                error: null,
-            }
-        case 'SUCCESS':
-            return {
-                loading: false,
-                data: action.data,
-                error: null,
-            }
-        case 'ERROR':
-            return {
-                loading: false,
-                data: null,
-                error: action.error
-            }
-        default:
-            throw new Error(`unhandled action type: ${action.type}`);
-    }
-}
-
 function Users () {
-    const [state, dispatch] = useReducer(reducer, {
-        loading: false,
-        data: null,
-        error: null,
-    });
+    const [users, setUsers] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
     const fetchUsers = async () => {
-        dispatch({type: 'LOADING'});
         try{
+            /* 값 초기화 */
+            setUsers(null);
+            setError(null);
+            /* 로딩이 시작됐다는 것을 의미 */
+            setLoading(true);
             /* api요청 */
             const response = await axios.get(
                 'https://jsonplaceholder.typicode.com/users/'
             );
-            dispatch({type: 'SUCCESS', data:response.data});
+            setUsers(response.data);
         } catch (e) {
-            dispatch({type:'ERROR', error: e});
             console.log(e.response.status);
+            setError(e);
         }
+        setLoading(false);
     };
 
     /* 컴포넌트가 처음 렌더링 될때 api호출 */
@@ -52,7 +30,6 @@ function Users () {
         fetchUsers();
     }, [])
 
-    const {loading, data: users, error} = state;
     if(loading) return <div>로딩중...</div>
     if(error) return <div>에러가 발생했습니다.</div>
     if(!users) return null;
